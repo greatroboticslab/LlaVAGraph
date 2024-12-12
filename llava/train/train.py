@@ -36,7 +36,8 @@ from llava.model import *
 from llava.mm_utils import tokenizer_image_token
 
 from PIL import Image
-
+import os
+os.environ["WANDB_DISABLED"] = "true"
 
 local_rank = None
 
