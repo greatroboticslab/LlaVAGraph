@@ -7,14 +7,14 @@
 #SBATCH --time=00:30:00          # Time limit (hh:mm:ss)
 #SBATCH --output=my_job.out      # Standard output
 #SBATCH --error=my_job.err       # Standard error
-
+set -e
 # Load any necessary modules or environments
 echo "==> Loading modules"
 module load cuda/12.4
 echo "==> Creating virtual environment"
-python -m venv /projects/imo2d/llava
+python -m venv /projects/imo2d/LLaVAGraph
 echo "==> Activating conda environment"
-source /projects/imo2d/llava
+source /projects/imo2d/LLaVAGraph/bin/activate
 echo "==> Installing torch"
 pip install torch
 pip install --upgrade pip  # enable PEP 660 support
