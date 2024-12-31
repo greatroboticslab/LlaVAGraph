@@ -61,16 +61,17 @@ def main(args):
     
     results = []
     images = os.listdir(args.image_folder)
-    for testImage in images[:2]:
+
+    if (args.subset):
+        images = images[:args.subset]
+
+    for testImage in images:
         conv = conv_templates[args.conv_mode].copy()
-        print(testImage)
+        print("Evaluating", testImage, "...")
         image = load_image(f"{args.image_folder}/{testImage}")
-        print(image)
         image_size = image.size
-        print(image_size)
         # Similar operation in model_worker.py
         image_tensor = process_images([image], image_processor, model.config)
-        print(image_tensor)
         image_tensor = image_tensor.to(model.device, dtype=torch.float16)
 
         questions = ["Is the line shown in the graph continuous? Describe the line.", "Does the graph contain any random points?", "Does the graph contain sharp corners?"]
@@ -79,13 +80,10 @@ def main(args):
             "conversation": []
         }
         for question in questions:
-            print("Question:", question)
-            print("Answer: ", end="")
             inp = question
 
             if image is not None:
                 # first message
-                print("First message!!")
                 if model.config.mm_use_im_start_end:
                     inp = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + inp
                 else:
@@ -118,7 +116,6 @@ def main(args):
             result["conversation"].append({"question": question, "answer": outputs})
             if args.debug:
                 print("\n", {"prompt": prompt, "outputs": outputs}, "\n")
-        print(result)
         results.append(result)
     with open(args.output_file, "w") as outputFile:
         json.dump(results, outputFile, indent=2)
@@ -130,6 +127,7 @@ if __name__ == "__main__":
     parser.add_argument("--model-base", type=str, default=None)
     parser.add_argument("--image-folder", type=str, required=True)
     parser.add_argument("--output-file", type=str, required=True)
+    parser.add_argument("--subset", type=int, required=False)
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--conv-mode", type=str, default=None)
     parser.add_argument("--temperature", type=float, default=0.2)
