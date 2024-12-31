@@ -1,0 +1,1 @@
+Rewrite this sentence 20 different ways: This graph is showing a square wave. The sentence must include the term 'square wave' and only return the rewritten sentences. Have a clear and succint tone.

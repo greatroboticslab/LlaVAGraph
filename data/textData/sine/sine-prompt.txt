@@ -1,0 +1,1 @@
+Rewrite this sentence 20 different ways: This graph is showing a sine wave. The sentence must include the term 'sine wave' and only return the rewritten sentences. Have a clear and succint tone.

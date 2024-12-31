@@ -12,6 +12,7 @@ dist
 
 # Data
 !**/alpaca-data-conversation.json
+*.gzip
 
 # Editor
 .idea
@@ -34,3 +35,9 @@ ckpts*
 
 # Demo
 serve_images/
+
+# Images
+*.png
+
+# Notebooks (convert them to scripts if necessary)
+*.ipynb
