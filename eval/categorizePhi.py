@@ -10,10 +10,9 @@ def main(args):
     # Load tokenizer and model
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForCausalLM.from_pretrained(model_path)
-
     # Move to GPU if available
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    model = model.to(device)
+    model.to("cuda")
+
     
     with open(args.conversation_file, "r") as conversations:
         data = json.load(conversations)
@@ -44,14 +43,16 @@ C) Square wave: A wave that is not continuous, not random, and has sharp corners
 
 Final Question: Based on this information, which type of graph do I have? Only select from the three options (A, B, C) provided above. Do not invent new answers or modify the options. Explain your reasoning.
         """
-        inputs = tokenizer(prompt, return_tensors="pt").to(device)
-        output = model.generate(**inputs, max_new_tokens=50, eos_token_id=tokenizer.eos_token_id)
-        response = tokenizer.decode(output[0], skip_special_tokens=True)
-        
-        input_length = len(tokenizer(prompt)["input_ids"])
-        modelResponse = response[len(prompt)+1:]  # Adjust if tokenizer handles spaces differently
-        print(modelResponse)
+        messages = [{"role": "user", "content": prompt}]
+        inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to("cuda")
 
+        outputs = model.generate(inputs, max_new_tokens = 200)
+
+        # this is surprisingly weird to do?
+        # https://github.com/huggingface/transformers/issues/17117#issuecomment-1120809167
+        modelResponse = tokenizer.batch_decode(outputs[:, inputs.shape[1]:])[0]
+    
+        print(modelResponse)
         categorizations.append({"conversationId": conversationId, "response": modelResponse})
     
     print(categorizations)
