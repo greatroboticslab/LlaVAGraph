@@ -10,30 +10,9 @@
 
 ## Install
 
-### Slurm Install
-
-```bash
-git clone https://github.com/greatroboticslab/LlaVAGraph/
-cd LLaVAGraph
-```
-
-If you're running this on the MTSU cluster, this shouldn't be too bad... Modify `slurm/dependencies.sbatch` with your desired paths and then run it.
-
-```bash
-
-```
-
-```
-sbatch slurm/dependencies.sbatch
-```
-
-### Manual Install
-
-Hopefully you won't have to do this, but these instructions are here for reference.
-
 2. Install Package
 ```Shell
-conda create -n llava python=3.10 -y
+python -m venv /projects/<username>/llava
 conda activate llava
 pip install --upgrade pip  # enable PEP 660 support
 pip install -e .
@@ -55,7 +34,14 @@ bash ./download-llava.bash <save-dir>
 pip install deepspeed
 ```
 
+6. Download LLAMA weights
 
+For whatever reason, this doesn't work well if you set `local-dir` to include the `/projects/` directory.
+
+```
+huggingface-cli download meta-llama/Llama-3.2-3B-Instruct --exclude "original/*" --local-dir Llama-3.2-3B-Instruct
+mv Llama-3.2-3B-Instruct /projects/<username>/Llama-3.2-3B-Instruct
+```
 ## Finetuning
 
 ### Dataset Format
