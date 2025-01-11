@@ -1,12 +1,12 @@
-# 📊 LLaVAGraph
+# 🌋📊 LLaVAGraph
 
 
 ## Contents
 - [Install](#install)
 - [Finetuning](#Finetuning)
-- [Demo](#Demo)
-- [Train](#train)
-- [Evaluation](#evaluation)
+- [Evaluation](#Evaluation)
+- [Acknowledgements](#Acknowledgements)
+
 
 ## Install
 
@@ -34,15 +34,6 @@ bash ./download-llava.bash <save-dir>
 pip install deepspeed
 ```
 
-6. Download LLAMA weights
-
-For whatever reason, this doesn't work well if you set `local-dir` to include the `/projects/` directory.
-
-```
-pip install -U "huggingface_hub[cli]"
-huggingface-cli download meta-llama/Llama-3.2-3B-Instruct --exclude "original/*" --local-dir Llama-3.2-3B-Instruct
-mv Llama-3.2-3B-Instruct /projects/<username>/Llama-3.2-3B-Instruct
-```
 ## Finetuning
 
 ### Dataset Format
@@ -122,12 +113,71 @@ And get your final output.
 
 ## Evaluation
 
+### Installation
 
+Currently, evaluation requires a separate virtual environment for running LLAMA 3.2 3B (<https://huggingface.co/meta-llama/Llama-3.2-3B>). You'll need to request access to those models through Huggingface first (it took me less than an hour to get it approved, but your mileage may vary...)
+
+```
+pip install -U "huggingface_hub[cli]"
+huggingface-cli login
+huggingface-cli download meta-llama/Llama-3.2-3B-Instruct --exclude "original/*" --local-dir Llama-3.2-3B-Instruct
+```
+
+<details>
+<summary>MTSU cluster users</summary>
+  
+```
+mv Llama-3.2-3B-Instruct /projects/<username>/Llama-3.2-3B-Instruct
+```
+  
+(For whatever reason, this doesn't work well if you set `local-dir` to include the `/projects/` directory, so you'll need the extra step)
+  
+</details>
+
+### Running Captioning
+
+Look at the paths in `eval/evaluateLLaVA.sh` and change them to fit your current folder setup. Then run the training script:
+
+```
+bash scripts/evaluateLLaVA.sh
+```
+
+This will create three files in `eval/results/llava` - `randomNoise.json`, `sineWave.json`, and `squareWave.json`. This generates a description of the image:
+
+```json
+{
+    "image": "SquareTrials-3-100Hz-100Hz.xlsx-17.png",
+    "conversation": [
+      {
+        "question": "Is the line shown in the graph continuous? Describe the line.",
+        "answer": "<s> This wave exhibits a non-random, yet discontinuous, pattern with sudden shifts to symmetrical peak excursions.</s>"
+      },
+      {
+        "question": "Does the graph contain any random points?",
+        "answer": "<s> The continuous line's transitions between two distinct levels are regular and predictable, demonstrating a deterministic process.</s>"
+      },
+      {
+        "question": "Does the graph contain sharp corners?",
+        "answer": "<s>  While non-random, this graph exhibits sharp corners and abrupt decreases in value.</s>"
+      }
+    ]
+  },
+```
+
+Once these descriptions are generated, we can now run `eval/categorizeLLAMA.sh`, which takes the following information and makes a decision.
+
+```json
+{
+    "conversationId": "SquareTrials-3-100Hz-100Hz.xlsx-17.png",
+    "response": "Based on the information provided, I would select option C) Square wave.\n\nThe reasoning behind this decision is as follows:\n\n1. The line exhibits sharp corners and abrupt decreases in value, which aligns with the characteristics of a square wave.\n2. The line is non-random, yet discontinuous, which is also consistent with the properties of a square wave.\n3. The line's transitions between two distinct levels are regular and predictable, indicating a deterministic process, which is another characteristic of square waves.\n4. The line does not exhibit gradual transitions or easily discernible structure, which distinguishes it from a sine wave.\n\nThese characteristics collectively support the conclusion that the graph represents a square wave."
+},
+```
 
 ## Acknowledgements
 
-- [Vicuna](https://github.com/lm-sys/FastChat): the codebase we built upon, and our base model Vicuna-13B that has the amazing language capabilities!
 - [LLaVA](https://github.com/haotian-liu/LLaVA): the base for our models
+  - [Vicuna](https://github.com/lm-sys/FastChat): the codebase we built upon, and our base model Vicuna-13B that has the amazing language capabilities!
+- [LLAMA 3.2 3B](https://huggingface.co/meta-llama/Llama-3.2-3B): our reasoning model
 
 [![Code License](https://img.shields.io/badge/Code%20License-Apache_2.0-green.svg)](https://github.com/tatsu-lab/stanford_alpaca/blob/main/LICENSE)
 **Usage and License Notices**: This project utilizes certain datasets and checkpoints that are subject to their respective original licenses. Users must comply with all terms and conditions of these original licenses, including but not limited to the [OpenAI Terms of Use](https://openai.com/policies/terms-of-use) for the dataset and the specific licenses for base language models for checkpoints trained using the dataset (e.g. [Llama community license](https://ai.meta.com/llama/license/) for LLaMA-2 and Vicuna-v1.5). This project does not impose any additional constraints beyond those stipulated in the original licenses. Furthermore, users are reminded to ensure that their use of the dataset and checkpoints is in compliance with all applicable laws and regulations.
