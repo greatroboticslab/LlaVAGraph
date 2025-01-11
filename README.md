@@ -39,6 +39,7 @@ pip install deepspeed
 For whatever reason, this doesn't work well if you set `local-dir` to include the `/projects/` directory.
 
 ```
+pip install -U "huggingface_hub[cli]"
 huggingface-cli download meta-llama/Llama-3.2-3B-Instruct --exclude "original/*" --local-dir Llama-3.2-3B-Instruct
 mv Llama-3.2-3B-Instruct /projects/<username>/Llama-3.2-3B-Instruct
 ```
