@@ -1,5 +1,8 @@
 # 🌋📊 LLaVAGraph
 
+`LLaVAGraph` is a multimodal agentic framework designed for classifying graphs of laser displacement data.
+
+_Abstract:_ Pizoelectric actuator has been used extensively throughout multiple industries. The characterization of the pizoelectric actuator is important to ensure its accuracy.  This research does not only measure the displacement of the pizoelectric actuator but also  classifies different patterns of the motion using large language model. The use of the large language model has offered significant advantages by not only capable of  classification of the motion precisely but also answers the potential questions related to the pizoelectric actuator motion properties thus making it a useful tool for practical manufacturing process quality control uses.   
 
 ## Contents
 - [Install](#install)
