@@ -15,7 +15,7 @@ _Abstract:_ Pizoelectric actuator has been used extensively throughout multiple 
 
 ## Install
 
-2. Install Package
+1. Install Package
 ```Shell
 python -m venv /projects/<username>/llava
 conda activate llava
@@ -23,18 +23,18 @@ pip install --upgrade pip  # enable PEP 660 support
 pip install -e .
 ```
 
-3. Install additional packages for training cases
+2. Install additional packages for training cases
 ```
 pip install -e ".[train]"
 pip install flash-attn --no-build-isolation
 ```
 
-4. Download LLaVA weights
+3. Download LLaVA weights
 ```Shell
 bash ./download-llava.bash <save-dir>
 ```
 
-5. Install `deepspeed`
+4. Install `deepspeed`
 ```Shell
 pip install deepspeed
 ```
@@ -45,29 +45,29 @@ pip install deepspeed
 
 Convert your data to a JSON file of a List of all samples. Sample metadata should contain `id` (a unique identifier), `image` (the path to the image), and `conversations` (the conversation data between human and AI).
 
-A sample JSON for finetuning LLaVA for generating tag-style captions for Stable Diffusion:
-
 ```json
-[
-  {
-    "id": "997bb945-628d-4724-b370-b84de974a19f",
-    "image": "part-000001/997bb945-628d-4724-b370-b84de974a19f.jpg",
-    "conversations": [
+{
+    "image": "SquareTrials-3-100Hz-100Hz.xlsx-17.png",
+    "conversation": [
       {
-        "from": "human",
-        "value": "<image>\nWrite a prompt for Stable Diffusion to generate this image."
+        "question": "Is the line shown in the graph continuous? Describe the line.",
+        "answer": "<s> This wave exhibits a non-random, yet discontinuous, pattern with sudden shifts to symmetrical peak excursions.</s>"
       },
       {
-        "from": "gpt",
-        "value": "a beautiful painting of chernobyl by nekro, pascal blanche, john harris, greg rutkowski, sin jong hun, moebius, simon stalenhag. in style of cg art. ray tracing. cel shading. hyper detailed. realistic. ue 5. maya. octane render. "
+        "question": "Does the graph contain any random points?",
+        "answer": "<s> The continuous line's transitions between two distinct levels are regular and predictable, demonstrating a deterministic process.</s>"
       },
+      {
+        "question": "Does the graph contain sharp corners?",
+        "answer": "<s>  While non-random, this graph exhibits sharp corners and abrupt decreases in value.</s>"
+      }
     ]
   },
-  ...
-]
 ```
 
 ### Modifying Training Parameters
+
+You'll need to modify your training parameters inside `scripts/v1_5/finetune_task_lora.sh` to match your current setup.
 
 ```bash
 
