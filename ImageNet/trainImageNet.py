@@ -69,5 +69,5 @@ for epoch in range(num_epochs):
 
 print("Training Complete!")
 
-torch.save(resnet, "resnet_finetuned.pth")
+torch.save(resnet, "resnet_50.pth")
 

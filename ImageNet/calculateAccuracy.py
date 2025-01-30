@@ -1,6 +1,12 @@
 import pandas as pd
+import argparse
 
-results = pd.read_csv("results.csv")
+# Instantiate the parser
+parser = argparse.ArgumentParser(description='Helper script to calculate accuracy results.')
+
+parser.add_argument('--filepath', help='A csv to read.', required=True)
+args = parser.parse_args()
+results = pd.read_csv(args.filepath)
 
 for i in range(3):
     subset = results[results["actual"]==i]

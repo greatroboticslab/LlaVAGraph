@@ -8,34 +8,39 @@ from torchvision.datasets import ImageFolder
 import torch.nn as nn
 import torch.optim as optim
 from torchvision.transforms import v2
+import argparse
 
-resnet = torch.load("resnet_finetuned.pth")
+# initialize the parser
+parser = argparse.ArgumentParser(description='Categorize images using finetuned ResNet.')
+parser.add_argument('--model-path', help='The path to a finetuned ResNet', required=True)
+parser.add_argument('--folder', help='The path to the test images', required=True)
+args = parser.parse_args()
 
+# load the model and put it in eval mode
+resnet = torch.load(args.model_path)
 resnet.eval()
 
+# prepare our processing
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 transform = v2.Compose([
     v2.ToImage(),
     v2.RandomResizedCrop(size=(224, 224), antialias=True),
-    v2.RandomHorizontalFlip(p=0.5),
     v2.ToDtype(torch.float32, scale=True),
     v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
 
-train_data = ImageFolder(root="../data/subset/testData", transform = transform)
+# load our data
+train_data = ImageFolder(root=args.folder, transform = transform)
 train_loader = DataLoader(train_data, batch_size=32, shuffle=True)
-
+print("prediction,actual")
 # Make prediction
 with torch.no_grad():
-   
-    predictions = []
-
+    
     for images, labels in train_loader:
-        predictions = []
         images = images.to(device)
 
         outputs = resnet(images)
         _, predicted = torch.max(outputs, 1)
-        predictions.append(predicted)
-        print(f"Predicted class: {predictions}")
-        print(f"Actual labels: {labels}")
+        for prediction, actual in zip(predicted, labels):
+            print(f"{prediction},{actual}")
+
