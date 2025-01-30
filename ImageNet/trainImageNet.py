@@ -7,6 +7,14 @@ from torchvision.datasets import ImageFolder
 import torch.nn as nn
 import torch.optim as optim
 from torchvision.transforms import v2
+import argparse
+
+# initialize the parser
+parser = argparse.ArgumentParser(description='Categorize images using finetuned ResNet.')
+parser.add_argument('--model-path', help='The path to save the finetuned ResNet', required=True)
+parser.add_argument('--folder', help='The path to the train images', required=True)
+parser.add_argument('--epochs', type=int, help='The number of training epochs', required=True)
+args = parser.parse_args()
 
 resnet = models.resnet50(pretrained=True)
 
@@ -37,20 +45,16 @@ transforms = v2.Compose([
 ])
 
 # Load datasets
-print("Loading...")
-train_data = ImageFolder(root="../data/subset/trainData", transform = transforms)
+train_data = ImageFolder(root=args.folder, transform = transforms)
 train_loader = DataLoader(train_data, batch_size=32, shuffle=True)
-print("Loaded dataset!")
 
 # Class names
-print(train_data.classes)
 
 criterion = nn.CrossEntropyLoss()  # Because you're doing classification
 optimizer = optim.Adam(resnet.parameters(), lr=0.001)
 
 # Training loop
-num_epochs = 10
-for epoch in range(num_epochs):
+for epoch in range(args.epochs):
     resnet.train()
     running_loss = 0.0
 
@@ -67,7 +71,6 @@ for epoch in range(num_epochs):
 
     print(f"Epoch {epoch+1}/{num_epochs}, Loss: {running_loss/len(train_loader):.4f}")
 
-print("Training Complete!")
-
-torch.save(resnet, "resnet_50.pth")
+# save the dataset
+torch.save(resnet, args.model_path)
 

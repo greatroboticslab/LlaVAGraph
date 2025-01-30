@@ -4,9 +4,9 @@
 Well, it doesn't look terrible compared to our other models.
 
 ```
-python trainImageNet.py
-python predictImageNet.py > results.csv
-python calculateAccuracy.py
+python trainImageNet.py --epochs 10 --folder /home/imo2d/LLaVA/data/subset/trainData --model_path resnet_50.pth
+python predictImageNet.py --folder /home/imo2d/LLaVA/data/subset/testData --model_path resnet_50.pth > results.csv
+python calculateAccuracy.py --filepath results.csv
 ```
 
 Results for Resnet 50 and 10 epochs:
