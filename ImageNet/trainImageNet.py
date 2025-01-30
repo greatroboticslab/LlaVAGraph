@@ -8,11 +8,21 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision.transforms import v2
 
-resnet = models.resnet18(pretrained=True)
+resnet = models.resnet50(pretrained=True)
 
-# Modify the last fully connected layer for 3 classes
-num_ftrs = resnet.fc.in_features
-resnet.fc = nn.Linear(num_ftrs, 3)  # Replace FC layer to match your 3 classes
+# lots of help from here: https://ds-amit.medium.com/fine-tuning-resnet50-a-practical-guide-a5d7622a608d
+# Thanks :)
+# Freeze all layers
+for parameter in resnet.parameters():
+    parameter.requires_grad = False
+
+# Replace the classification head
+num_classes = 3 
+resnet.fc = torch.nn.Linear(resnet.fc.in_features, num_classes)
+
+# Unfreeze the last block
+for param in resnet.layer4.parameters():
+    param.requires_grad = True
 
 # Move to GPU if available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
