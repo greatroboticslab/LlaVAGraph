@@ -14,6 +14,10 @@
 > [!WARNING]
 > These scripts are designed to called from the slurm scripts in the `slurm` folder.
 
+I _love_ bash scripting - it really makes things easier. Most of these scripts call Python scripts over a folder of images, so they aren't _super_ complicated. ChatGPT does a great job (and helped me a lot with these!)
+
+- <https://goalkicker.com/BashBook/BashNotesForProfessionals.pdf>
+
 ## setupDirectories.sh
 
 - Setup the directory structure for the `results` folder.
