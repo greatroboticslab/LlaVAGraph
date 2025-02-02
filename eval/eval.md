@@ -11,6 +11,14 @@
 -rw-r--r--. 1 imo2d domain users  537 Jan 20 21:59 summarizeLLAMA.sh
 ```
 
+> [!WARNING]
+> These scripts are designed to called from the slurm scripts in the `slurm` folder.
+
+## setupDirectories.sh
+
+- Setup the directory structure for the `results` folder.
+	- Only run this once!
+
 ## cateogrizeLLAMA.sh
 
 - Read captions from the LLaVA model and output the final answer
@@ -31,3 +39,7 @@
 
 - Output final categorizations from our LLAMA model 
 
+
+## experimentalAnalysis.ipynb
+
+- Graph the results from the experiments
