@@ -1,0 +1,33 @@
+# EVAL
+
+> [!NOTE]
+> This _should_ work without any changes; you'll probably need to change the location of your models and checkpoints.
+
+```
+-rw-r--r--. 1 imo2d domain users  528 Jan 20 21:59 categorizeLLAMA.sh
+-rw-r--r--. 1 imo2d domain users  522 Jan  1 14:19 categorizePhi.sh
+-rw-r--r--. 1 imo2d domain users 1129 Dec 30 11:27 eval.sh
+-rw-r--r--. 1 imo2d domain users  548 Jan 20 18:20 evaluateLLaVA.sh
+-rw-r--r--. 1 imo2d domain users  537 Jan 20 21:59 summarizeLLAMA.sh
+```
+
+## cateogrizeLLAMA.sh
+
+- Read captions from the LLaVA model and output the final answer
+
+## categorizePhi.sh
+
+- Same as above; don't use it though...
+
+## eval.sh
+
+- Older testing script; don't use for formal evaluation
+
+## evaluateLLaVA.sh
+
+- Caption all of our images using a finetuned LLaVA model
+
+## summarizeLLAMA.sh
+
+- Output final categorizations from our LLAMA model 
+
