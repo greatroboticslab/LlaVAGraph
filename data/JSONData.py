@@ -53,7 +53,7 @@ with open(RANDOM_SQUARE, "r") as file:
 
 # In[6]:
 
-
+maxImage = len(os.listdir("subset/trainData/NoiseData"))
 for file in os.listdir("subset/trainData/NoiseData"):
     json_data = {
         "id": uniqueId,
@@ -104,9 +104,10 @@ with open(SINE_SQUARE, "r") as file:
 
 
 # In[8]:
-
-
-for file in os.listdir("subset/trainData/SineData"):
+sineImages = os.listdir("subset/trainData/SineData")
+random.shuffle(sineImages)
+sineImages = sineImages[:maxImage]
+for file in sineImages:
     json_data = {
         "id": uniqueId,
         "image": f"subset/trainData/SineData/{file}",
@@ -157,7 +158,10 @@ with open(SQUARE_SQUARE, "r") as file:
 # In[10]:
 
 
-for file in os.listdir("subset/trainData/SquareData"):
+squareImages = os.listdir("subset/trainData/SquareData")
+random.shuffle(squareImages)
+squareImages = squareImages[:maxImage]
+for file in squareImages:
     json_data = {
         "id": uniqueId,
         "image": f"subset/trainData/SquareData/{file}",
@@ -196,8 +200,9 @@ for file in os.listdir("subset/trainData/SquareData"):
 
 # In[11]:
 
+random.shuffle(data)
 
-with open("trainingData.json", "w") as outputFile:
+with open("fullData.json", "w") as outputFile:
     json.dump(data, outputFile, indent=2)
 
 
