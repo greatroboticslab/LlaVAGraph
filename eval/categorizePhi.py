@@ -18,15 +18,16 @@ def main(args):
         data = json.load(conversations)
 
     categorizations = [] 
+    if args.subset:
+        data = data[:args.subset]
 
     for conversation in data:
         conversationId = conversation["image"]
+        print("Categorizing", conversationId)
 
         # Input and generation
         prompt = """
-Below is a description of a graph's waveform and a multiple-choice question about it. Do not generate additional questions, answers, or options. Only respond directly to the final question. Do not add or change the provided options.
-
-**Answer only the final question provided**
+Below is a description of a graph's waveform and a multiple-choice question about it. Do not generate additional questions, answers, or options. Only respond directly to the final question. Only use the criteria below for your decision; do not use any outside knowledge.
         """
         for interaction in conversation["conversation"]:
             question = interaction["question"]
@@ -37,12 +38,13 @@ Below is a description of a graph's waveform and a multiple-choice question abou
 
         prompt += """\nThere are three options:
 
-A) Random noise: This wave will have random points in the entire line. It may or may not appear continuous.
-B) Sine wave: A smooth continuous wave with gradual transitions from one level to another.
-C) Square wave: A wave that is not continuous, not random, and has sharp corners where it jumps from one value to another.
+A) Random noise: Random noise waves have data points distributed randomly across the graph. Random noise waves have considerable value shifts. Random noise waves have rapid value alterations. Random noise waves do not have a discernible structure. 
+B) Sine wave: Sine waves have gradual transitions from one level to another. Sine waves do not have rapid value alterations. Sine waves do not have any randomly distributed datapoints. Sine waves have an easily discernible structure.
+C) Square wave: Square waves are not continuous. Square waves have sharp corners where it jumps from one value to another. If it lacks a discernible structure, it cannot be a square wave.
 
 Final Question: Based on this information, which type of graph do I have? Only select from the three options (A, B, C) provided above. Do not invent new answers or modify the options. Explain your reasoning.
         """
+        print(prompt)
         messages = [{"role": "user", "content": prompt}]
         inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to("cuda")
 
@@ -52,10 +54,8 @@ Final Question: Based on this information, which type of graph do I have? Only s
         # https://github.com/huggingface/transformers/issues/17117#issuecomment-1120809167
         modelResponse = tokenizer.batch_decode(outputs[:, inputs.shape[1]:])[0]
     
-        print(modelResponse)
         categorizations.append({"conversationId": conversationId, "response": modelResponse})
     
-    print(categorizations)
     with open(args.output_file, "w") as outputFile:
         json.dump(categorizations, outputFile, indent=2)
 
@@ -64,5 +64,6 @@ if __name__ == "__main__":
     parse.add_argument("--model-path", type=str, required=True)
     parse.add_argument("--conversation-file", type=str, required=True)
     parse.add_argument("--output-file", type=str, required=True)
+    parse.add_argument("--subset", type=int)
     args = parse.parse_args()
     main(args)
