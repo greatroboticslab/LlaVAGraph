@@ -5,8 +5,8 @@ deepspeed  /home/imo2d/LLaVA/llava/train/train_mem.py \
     --deepspeed /home/imo2d/LLaVA/scripts/zero3.json \
     --model_name_or_path /projects/imo2d/llava-v1.6-vicuna-7b/ \
     --version v1 \
-    --data_path /home/imo2d/LaserData/trainingData.json \
-    --image_folder /home/imo2d/LaserData/ \
+    --data_path /home/imo2d/LLaVA/data/fullData.json \
+    --image_folder /home/imo2d/LLaVA/data/ \
     --vision_tower openai/clip-vit-large-patch14-336 \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
@@ -16,7 +16,7 @@ deepspeed  /home/imo2d/LLaVA/llava/train/train_mem.py \
     --group_by_modality_length True \
     --bf16 True \
     --output_dir /projects/imo2d/checkpoints/ \
-    --num_train_epochs 1 \
+    --num_train_epochs 5 \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 4 \
     --gradient_accumulation_steps 1 \
