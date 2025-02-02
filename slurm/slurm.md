@@ -14,6 +14,14 @@
 -rw-r--r--. 1 imo2d domain users  609 Jan 20 15:49 training.sbatch
 ```
 
+Slurm is _weird_ to deal with - ChatGPT works well with it though... (It helped get all of these scripts started :) )
+
+These aren't perfect, but they helped me a lot:
+
+- <https://hpcdocs.hpc.arizona.edu/running_jobs/batch_jobs/intro/#batch-script-structure>
+- <https://hpcdocs.hpc.arizona.edu/running_jobs/batch_jobs/submitting_jobs/>
+- <https://hpcdocs.hpc.arizona.edu/running_jobs/monitoring_jobs_and_resources/>
+
 ```mermaid
 flowchart TD
     A(training.sbatch) --> B(captionLLAVA.sbatch) --> C(categorizeLLAMA.sbatch) --> D(calculateAccuracy.sbatch);
