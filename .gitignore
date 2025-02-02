@@ -13,6 +13,8 @@ dist
 # Data
 !**/alpaca-data-conversation.json
 *.gzip
+*.csv
+*.txt
 
 # Editor
 .idea
@@ -41,3 +43,8 @@ serve_images/
 
 # Notebooks (convert them to scripts if necessary)
 *.ipynb
+
+# slurm output
+*.out
+*.err
+
