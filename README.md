@@ -123,6 +123,7 @@ And get your final output.
 Currently, evaluation requires a separate virtual environment for running LLAMA 3.2 3B (<https://huggingface.co/meta-llama/Llama-3.2-3B>). You'll need to request access to those models through Huggingface first (it took me less than an hour to get it approved, but your mileage may vary...)
 
 ```
+# create a new virtual environment and activate
 pip install -U "huggingface_hub[cli]"
 huggingface-cli login
 huggingface-cli download meta-llama/Llama-3.2-3B-Instruct --exclude "original/*" --local-dir Llama-3.2-3B-Instruct
