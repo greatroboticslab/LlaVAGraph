@@ -183,7 +183,12 @@ Once these descriptions are generated, we can now run `eval/categorizeLLAMA.sh`,
 
 > ![NOTE]
 > These scripts will only work on a GPU partition on the cluster; either use some of the `slurm` scripts or open an interactive session to run these scripts.
-> 
+
+
+## LLaMA, Here is the LLama training code
+
+https://github.com/greatroboticslab/LlaVAGraph/blob/main/eval/categorizeLLAMA.sh
+https://github.com/greatroboticslab/LlaVAGraph/blob/main/eval/categorizeLLAMA.py
 
 ## Acknowledgements
 
