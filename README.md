@@ -112,9 +112,9 @@ deepspeed  <path-to-llava>/llava/train/train_mem.py \
 
 Here is the data needed for running the trainning. Specifically, these two files are in the google drive. 
 
-trainingData.json
-zero3.json
-the training and testing images.
+trainingData.json;
+zero3.json;
+the training and testing images
 
 https://drive.google.com/file/d/1amdSPdiPv1uonQpTGUKBgJOA7TGd3wYy/view?usp=drive_link
 
