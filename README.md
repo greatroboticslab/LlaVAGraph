@@ -110,6 +110,10 @@ deepspeed  <path-to-llava>/llava/train/train_mem.py \
     --report_to none 
 ```
 
+Here is the data needed for running the trainning
+https://drive.google.com/file/d/1amdSPdiPv1uonQpTGUKBgJOA7TGd3wYy/view?usp=drive_link
+
+
 Once you get this setup correctly, you should be able to just run:
 
 ```
