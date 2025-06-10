@@ -48,3 +48,5 @@ serve_images/
 *.out
 *.err
 
+model/
+model/*
