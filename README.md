@@ -18,7 +18,9 @@ _Abstract:_ Pizoelectric actuator has been used extensively throughout multiple 
 1. Install Package
 ```Shell
 python -m venv /projects/<username>/llava
+conda create -n llava python=3.10
 conda activate llava
+conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
 pip install --upgrade pip  # enable PEP 660 support
 pip install -e .
 ```
